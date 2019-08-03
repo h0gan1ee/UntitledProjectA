@@ -15,6 +15,32 @@ namespace UntitledProjectA
             Count = Commands.Length - 1;
         }
 
+        public PermutationGroup(int count)
+        {
+            Commands = new int[count + 1];
+            Count = count;
+            for (int i = 1; i <= count; ++i)
+            {
+                Commands[i] = i;
+            }
+        }
+
+        public static bool operator !=(PermutationGroup pga, PermutationGroup pgb)
+        {
+            if (pga.Count != pgb.Count)
+            {
+                return true;
+            }
+            for (int i = 1; i <= pga.Count; ++i)
+            {
+                if (pga.Commands[i] != pgb.Commands[i])
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public static PermutationGroup operator *(PermutationGroup pga, PermutationGroup pgb)
         {
             PermutationGroup newPermutationGroup = new PermutationGroup(new int[pga.Count + 1]);
@@ -46,6 +72,22 @@ namespace UntitledProjectA
                 }
             }
             return false;
+        }
+
+        public static bool operator ==(PermutationGroup pga, PermutationGroup pgb)
+        {
+            if (pga.Count != pgb.Count)
+            {
+                return false;
+            }
+            for (int i = 1; i <= pga.Count; ++i)
+            {
+                if (pga.Commands[i] != pgb.Commands[i])
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         public static bool operator >(PermutationGroup pga, PermutationGroup pgb)
@@ -120,20 +162,23 @@ namespace UntitledProjectA
             return new PermutationGroup(inverseCommands);
         }
 
-        public void Show()
+        public string Show()
         {
+            StringBuilder stringBuilder = new StringBuilder();
             for (int i = Count; i >= 1; --i)
             {
-                Console.Write((-Commands[i]).ToString() + " ");
+                stringBuilder.Append((-Commands[i]).ToString() + " ");
             }
             for (int i = 1; i <= Count; ++i)
             {
-                Console.Write((Commands[i]).ToString() + " ");
+                stringBuilder.Append((Commands[i]).ToString() + " ");
             }
+            return stringBuilder.ToString();
         }
 
-        public void ShowInCyclicNotation()
+        public string ShowInCyclicNotation()
         {
+            StringBuilder stringBuilder = new StringBuilder();
             PermutationGroup mirrorPermutationGroup = new PermutationGroup(new int[Count + 1]);
             for (int i = 1; i <= Count; ++i)
             {
@@ -194,13 +239,14 @@ namespace UntitledProjectA
             }
             foreach (List<int> vs in cyclesList)
             {
-                Console.Write("( ");
+                stringBuilder.Append("( ");
                 foreach (int i in vs)
                 {
-                    Console.Write(i.ToString() + " ");
+                    stringBuilder.Append(i.ToString() + " ");
                 }
-                Console.Write(") ");
+                stringBuilder.Append(") ");
             }
+            return stringBuilder.ToString();
         }
     }
 }
